@@ -63,5 +63,16 @@ describe('Blog app', function () {
 			cy.get('#create-blog').click()
 			cy.get('#notification').should('contain', 'A new blog Cypress blog by admin added')
 		})
+
+		it('A blog can be liked', function () {
+			cy.get('#new-blog').click()
+			cy.get('#title').type('Cypress blog')
+			cy.get('#author').type('admin')
+			cy.get('#url').type('https://www.cypress.io/')
+			cy.get('#create-blog').click()
+			cy.get('#view-blog').click()
+			cy.get('#like-blog').click()
+			cy.get('#blog-likes').should('contain', '1')
+		})
 	})
 })
