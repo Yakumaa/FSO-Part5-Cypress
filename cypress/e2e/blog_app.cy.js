@@ -7,7 +7,13 @@ describe('Blog app', function () {
 			username: 'admin',
 			password: '1234',
 		}
+		const user2 = {
+			name: 'user2',
+			username: 'user2',
+			password: '1234',
+		}
 		cy.request('POST', 'http://localhost:3001/api/users', user)
+		cy.request('POST', 'http://localhost:3001/api/users', user2)
 	})
 
 	it('Login form is shown', function () {
@@ -86,6 +92,32 @@ describe('Blog app', function () {
 			cy.on('window:confirm', (t) => {
 				expect(t).to.equal('Remove blog Cypress blog by admin')
 			})
+		})
+
+		it('Only creator can see the delete Button', function () {
+			// cy.createBlog({
+			// 	title: 'Cypress blog',
+			// 	author: 'admin',
+			// 	url: 'https://www.cypress.io/',
+			// })
+			cy.get('#new-blog').click()
+			cy.get('#title').type('Cypress blog')
+			cy.get('#author').type('admin')
+			cy.get('#url').type('https://www.cypress.io/')
+			cy.get('#create-blog').click()
+
+			cy.get('#logout').click()
+			// cy.login({ username: 'user2', password: '1234' })
+			// cy.contains('user2 logged-in')
+			// cy.contains('Login').click()
+			cy.get('#username').type('user2')
+			cy.get('#password').type('1234')
+			cy.get('#login-button').click()
+
+			cy.contains('user2 logged-in')
+
+			cy.get('#view-blog').click()
+			cy.get('#view-blog').should('not.contain', 'remove')
 		})
 	})
 })
