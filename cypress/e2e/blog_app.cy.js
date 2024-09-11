@@ -74,5 +74,18 @@ describe('Blog app', function () {
 			cy.get('#like-blog').click()
 			cy.get('#blog-likes').should('contain', '1')
 		})
+
+		it('A blog can be deleted', function () {
+			cy.get('#new-blog').click()
+			cy.get('#title').type('Cypress blog')
+			cy.get('#author').type('admin')
+			cy.get('#url').type('https://www.cypress.io/')
+			cy.get('#create-blog').click()
+			cy.get('#view-blog').click()
+			cy.get('#delete-blog').click()
+			cy.on('window:confirm', (t) => {
+				expect(t).to.equal('Remove blog Cypress blog by admin')
+			})
+		})
 	})
 })
