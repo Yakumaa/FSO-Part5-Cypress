@@ -38,4 +38,19 @@ describe('Blog app', function () {
 			cy.get('html').should('not.contain', 'shrish logged-in')
 		})
 	})
+
+	describe('When logged in', function () {
+		beforeEach(function () {
+			cy.login({ username: 'admin', password: '1234' })
+		})
+
+		it('A blog can be created', function () {
+			cy.createBlog({
+				title: 'Cypress blog',
+				author: 'admin',
+				url: 'https://www.cypress.io/',
+			})
+			cy.get('.success').should('contain', 'A new blog Cypress blog by admin added')
+		})
+	})
 })
