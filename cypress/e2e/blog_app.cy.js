@@ -41,16 +41,27 @@ describe('Blog app', function () {
 
 	describe('When logged in', function () {
 		beforeEach(function () {
-			cy.login({ username: 'admin', password: '1234' })
+			// cy.login({ username: 'admin', password: '1234' })
+			cy.contains('Login').click()
+			cy.get('#username').type('admin')
+			cy.get('#password').type('1234')
+			cy.get('#login-button').click()
+
+			cy.contains('shrish logged-in')
 		})
 
 		it('A blog can be created', function () {
-			cy.createBlog({
-				title: 'Cypress blog',
-				author: 'admin',
-				url: 'https://www.cypress.io/',
-			})
-			cy.get('.success').should('contain', 'A new blog Cypress blog by admin added')
+			// cy.createBlog({
+			// 	title: 'Cypress blog',
+			// 	author: 'admin',
+			// 	url: 'https://www.cypress.io/',
+			// })
+			cy.get('#new-blog').click()
+			cy.get('#title').type('Cypress blog')
+			cy.get('#author').type('admin')
+			cy.get('#url').type('https://www.cypress.io/')
+			cy.get('#create-blog').click()
+			cy.get('#notification').should('contain', 'A new blog Cypress blog by admin added')
 		})
 	})
 })
